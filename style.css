@@ -1,0 +1,11 @@
+#conteinerHash {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  } 
+  
+  #hash {
+    padding: 2rem;
+    box-shadow: 1px 1px black;
+    
+  }
