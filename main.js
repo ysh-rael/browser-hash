@@ -40,7 +40,7 @@ SHA256(combinedData).then(hash => {
 
     // Exibe o hash em um elemento HTML
     const box_hash = document.querySelector('#hash');
-    box_hash.innerHTML = "Hash resultante: " + hash;
+    box_hash.innerHTML = hash;
     box_hash.value = hash
 });
 
