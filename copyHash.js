@@ -8,7 +8,7 @@ console.log(box_hash)
 // Adiciona um ouvinte de clique ao botão
 box_hash.addEventListener('click', function() {
     // Obtém o conteúdo do hash
-    const hashValue = this.textContent
+    const hashValue = this.value
     console.log('hashValue: ' + hashValue)
 
     // Cria um elemento de texto temporário
