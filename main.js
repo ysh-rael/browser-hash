@@ -43,13 +43,124 @@ const ecmascriptVersion = (typeof Symbol === 'function' && typeof Symbol.iterato
 const supportsServiceWorkers = 'serviceWorker' in navigator ? 'Supported' : 'Not Supported'
 const supportsWebWorkers = 'Worker' in window ? 'Supported' : 'Not Supported'
 const supportsWebRTC = 'RTCPeerConnection' in window ? 'Supported' : 'Not Supported'
-const browserVendor = navigator.vendor; // Fabricante do navegador
-const browserProduct = navigator.product; // Produto do navegador (por exemplo, 'Gecko', 'Presto', 'WebKit')
-const browserBuildID = navigator.buildID; // ID de compilação do navegador
+const browserVendor = navigator.vendor // Fabricante do navegador
+const browserProduct = navigator.product // Produto do navegador (por exemplo, 'Gecko', 'Presto', 'WebKit')
+const browserBuildID = navigator.buildID // ID de compilação do navegador
 
 // Informações sobre a plataforma
-const platform = navigator.platform; // Plataforma em que o navegador está sendo executado (por exemplo, Win32, MacIntel, Linux x86_64)
-const osVersion = navigator.appVersion; // Versão específica do sistema operacional
+const platform = navigator.platform // Plataforma em que o navegador está sendo executado (por exemplo, Win32, MacIntel, Linux x86_64)
+const osVersion = navigator.appVersion // Versão específica do sistema operacional
+
+
+
+// Informações adicionais
+const fonts = (() => {
+    const fontList = []
+    const fontTester = document.createElement('span')
+    fontTester.style.visibility = 'hidden'
+    fontTester.style.position = 'absolute'
+    fontTester.style.top = '-9999px'
+    document.body.appendChild(fontTester)
+    const defaultFonts = fontTester.style.fontFamily
+    const additionalFonts = [
+        'Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Helvetica', 'Trebuchet MS', 'Arial Black', 'Impact', 'Palatino Linotype',
+        'Book Antiqua', 'Tahoma', 'Geneva', 'Comic Sans MS', 'Lucida Sans Unicode',
+        'Lucida Grande', 'Century Gothic', 'Lucidabright', 'Noto Sans', 'Roboto',
+        'Lato', 'Open Sans', 'Montserrat', 'Source Sans Pro', 'Cabin'
+        // Adicione outras fontes aqui
+    ]
+    additionalFonts.forEach(font => {
+        fontTester.style.fontFamily = `${defaultFonts}, ${font}`
+        if (fontTester.style.fontFamily !== defaultFonts) {
+            fontList.push(font)
+        }
+    })
+    document.body.removeChild(fontTester)
+    return fontList.join(', ')
+})()
+
+const domBlockers = (() => {
+    const blockList = [
+        'AdBlock', 'AdGuard', 'uBlock', 'Adblock Plus', 'NoScript'
+        // Adicione outros bloqueadores de DOM aqui
+    ]
+    const detectedBlockers = blockList.filter(blocker => window[blocker])
+    return detectedBlockers.join(', ')
+})()
+
+const fontPreferences = (() => {
+    const fontPrefs = []
+    if (document.fonts && document.fonts.length > 0) {
+        document.fonts.forEach(font => {
+            fontPrefs.push(`${font.family} ${font.style}`)
+        })
+    }
+    return fontPrefs.join(', ')
+})()
+
+
+
+// Informações adicionais (continuação)
+const audio = 'AudioContext' in window ? 'Supported' : 'Not Supported'
+const screenFrame = window.screen.orientation ? 'Supported' : 'Not Supported'
+const canvas = (() => {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    return context ? 'Supported' : 'Not Supported'
+})()
+const osCpu = window.navigator.oscpu || 'N/A'
+const deviceMemory = window.navigator.deviceMemory || 'N/A'
+const hardwareConcurrency = window.navigator.hardwareConcurrency || 'N/A'
+const timezone = window.Intl ? window.Intl.DateTimeFormat().resolvedOptions().timeZone : 'N/A'
+const sessionStorage = 'sessionStorage' in window ? 'Supported' : 'Not Supported'
+const localStorage = 'localStorage' in window ? 'Supported' : 'Not Supported'
+const indexedDB = 'indexedDB' in window ? 'Supported' : 'Not Supported'
+const openDatabase = 'openDatabase' in window ? 'Supported' : 'Not Supported'
+const cpuClass = window.navigator.cpuClass || 'N/A'
+const plugins = (() => {
+    const pluginList = []
+    for (let i = 0; i < navigator.plugins.length; i++) {
+        pluginList.push(navigator.plugins[i].name)
+    }
+    return pluginList.join(', ')
+})()
+const touchSupport = 'ontouchstart' in window ? 'Supported' : 'Not Supported'
+const vendor = window.navigator.vendor || 'N/A'
+const vendorFlavors = window.navigator.vendorSub || 'N/A'
+const cookiesEnabled = window.navigator.cookieEnabled ? 'Enabled' : 'Disabled'
+const colorGamut = window.matchMedia('(color-gamut: srgb)').matches ? 'sRGB' : 'Not sRGB'
+const invertedColors = window.matchMedia('(inverted-colors: inverted)').matches ? 'Inverted' : 'Not Inverted'
+const forcedColors = window.matchMedia('(forced-colors: active)').matches ? 'Forced' : 'Not Forced'
+const monochrome = window.matchMedia('(monochrome)').matches ? 'Monochrome' : 'Not Monochrome'
+const contrast = window.matchMedia('(prefers-contrast)').matches ? 'High Contrast' : 'Not High Contrast'
+const reducedMotion = window.matchMedia('(prefers-reduced-motion)').matches ? 'Reduced Motion' : 'Not Reduced Motion'
+const hdr = window.matchMedia('(prefers-color-scheme: hdr)').matches ? 'HDR' : 'Not HDR'
+const math = (() => {
+    const mathObject = {
+        maxInteger: Number.MAX_SAFE_INTEGER,
+        pi: Math.PI,
+        sqrt2: Math.SQRT2
+    }
+    return JSON.stringify(mathObject)
+})()
+const pdfViewerEnabled = 'PDFViewer' in window ? 'Enabled' : 'Disabled'
+const architecture = window.navigator.userAgent.includes('WOW64') ? 'x64' : 'x86'
+const applePay = 'ApplePaySession' in window ? 'Supported' : 'Not Supported'
+const privateClickMeasurement = 'webkit' in window && 'privateClickMeasurement' in window.webkit ? 'Supported' : 'Not Supported'
+const webGlBasics = 'WebGLRenderingContext' in window ? 'Supported' : 'Not Supported'
+const webGlExtensions = (() => {
+    const extensions = []
+    const context = document.createElement('canvas').getContext('webgl') || document.createElement('canvas').getContext('experimental-webgl')
+    if (context) {
+        const exts = context.getSupportedExtensions()
+        for (let i = 0; i < exts.length; i++) {
+            extensions.push(exts[i])
+        }
+    }
+    return extensions.join(', ')
+})()
+
+
 
 // Combina todas as informações estáticas em uma string
 const combinedData =
@@ -77,7 +188,41 @@ const combinedData =
     osVersion +
     browserVendor +
     browserProduct +
-    browserBuildID
+    browserBuildID +
+    fonts +
+    domBlockers +
+    fontPreferences +
+    audio +
+    screenFrame +
+    canvas +
+    osCpu +
+    deviceMemory +
+    hardwareConcurrency +
+    timezone +
+    sessionStorage +
+    localStorage +
+    indexedDB +
+    openDatabase +
+    cpuClass +
+    plugins +
+    touchSupport +
+    vendor +
+    vendorFlavors +
+    cookiesEnabled +
+    colorGamut +
+    invertedColors +
+    forcedColors +
+    monochrome +
+    contrast +
+    reducedMotion +
+    hdr +
+    math +
+    pdfViewerEnabled +
+    architecture +
+    applePay +
+    privateClickMeasurement +
+    webGlBasics +
+    webGlExtensions
 
 // Calcula o hash SHA-256
 SHA256(combinedData).then(hash => {
@@ -92,33 +237,64 @@ SHA256(combinedData).then(hash => {
 
 
 
-
 // Depuração console:
 function debug() {
-    console.log(`BROWSERNAME: ${browserName}\n\n`);
-    console.log(`BROWSERBUILDID: ${browserBuildID}\n\n`);
-    console.log(`BROWSERPRODUCT: ${browserProduct}\n\n`);
-    console.log(`BROWSERVERSION: ${browserVersion}\n\n`);
-    console.log(`BROWSERVENDOR: ${browserVendor}\n\n`);
-    console.log(`COLORDEPTH: ${colorDepth}\n\n`);
-    console.log(`CPUCORES: ${cpuCores}\n\n`);
-    console.log(`DEVICETYPE: ${deviceType}\n\n`);
-    console.log(`ECMASCRIPTVERSION: ${ecmascriptVersion}\n\n`);
-    console.log(`GPUINFO: ${gpuInfo}\n\n`);
-    console.log(`HTMLVERSION: ${htmlVersion}\n\n`);
-    console.log(`MOBILEINFO: ${mobileInfo}\n\n`);
-    console.log(`OS: ${os}\n\n`);
-    console.log(`OSVERSION: ${osVersion}\n\n`);
-    console.log(`PREFERREDLANGUAGE: ${preferredLanguage}\n\n`);
-    console.log(`PIXELDEPTH: ${pixelDepth}\n\n`);
-    console.log(`PLATFORM: ${platform}\n\n`);
-    console.log(`SCREENRESOLUTION: ${screenResolution}\n\n`);
-    console.log(`SUPPORTSSERVICEWORKERS: ${supportsServiceWorkers}\n\n`);
-    console.log(`SUPPORTSWEBRTC: ${supportsWebRTC}\n\n`);
-    console.log(`SUPPORTSWEBSCOKETS: ${supportsWebSockets}\n\n`);
-    console.log(`SUPPORTSWEBWORKERS: ${supportsWebWorkers}\n\n`);
-    console.log(`TLSCOMPATIBILITY: ${tlsCompatibility}\n\n`);
-    console.log(`USERAGENT: ${userAgent}\n\n`);
-    console.log(`USERAGENTMASKED: ${userAgentMasked}\n\n`);
-    console.log(`WEBGLVERSION: ${webglVersion}\n\n`);
+    console.log(`APPLEPAY: ${applePay}\n\n`)
+    console.log(`ARCHITECTURE: ${architecture}\n\n`)
+    console.log(`AUDIO: ${audio}\n\n`)
+    console.log(`BROWSERBUILDID: ${browserBuildID}\n\n`)
+    console.log(`BROWSERNAME: ${browserName}\n\n`)
+    console.log(`BROWSERPRODUCT: ${browserProduct}\n\n`)
+    console.log(`BROWSERVERSION: ${browserVersion}\n\n`)
+    console.log(`BROWSERVENDOR: ${browserVendor}\n\n`)
+    console.log(`CANVAS: ${canvas}\n\n`)
+    console.log(`COLORDEPTH: ${colorDepth}\n\n`)
+    console.log(`COLORGAMUT: ${colorGamut}\n\n`)
+    console.log(`CONTRAST: ${contrast}\n\n`)
+    console.log(`COOKIESENABLED: ${cookiesEnabled}\n\n`)
+    console.log(`CPUCORES: ${cpuCores}\n\n`)
+    console.log(`CPUCLASS: ${cpuClass}\n\n`)
+    console.log(`DEVICEMEMORY: ${deviceMemory}\n\n`)
+    console.log(`DEVICETYPE: ${deviceType}\n\n`)
+    console.log(`DOMBLOCKERS: ${domBlockers}\n\n`)
+    console.log(`ECMASCRIPTVERSION: ${ecmascriptVersion}\n\n`)
+    console.log(`FONTS: ${fonts}\n\n`)
+    console.log(`FONTPREFERENCES: ${fontPreferences}\n\n`)
+    console.log(`FORCEDCOLORS: ${forcedColors}\n\n`)
+    console.log(`GPUINFO: ${gpuInfo}\n\n`)
+    console.log(`HARDWARECONCURRENCY: ${hardwareConcurrency}\n\n`)
+    console.log(`HDR: ${hdr}\n\n`)
+    console.log(`HTMLVERSION: ${htmlVersion}\n\n`)
+    console.log(`INDEXEDDB: ${indexedDB}\n\n`)
+    console.log(`INVERTEDCOLORS: ${invertedColors}\n\n`)
+    console.log(`LOCALSTORAGE: ${localStorage}\n\n`)
+    console.log(`MATH: ${math}\n\n`)
+    console.log(`MOBILEINFO: ${JSON.stringify(mobileInfo)}\n\n`)
+    console.log(`MONOCHROME: ${monochrome}\n\n`)
+    console.log(`OPENDATABASE: ${openDatabase}\n\n`)
+    console.log(`OS: ${os}\n\n`)
+    console.log(`OSCPU: ${osCpu}\n\n`)
+    console.log(`OSVERSION: ${osVersion}\n\n`)
+    console.log(`PDFVIEWERENABLED: ${pdfViewerEnabled}\n\n`)
+    console.log(`PREFERREDLANGUAGE: ${preferredLanguage}\n\n`)
+    console.log(`PLATFORM: ${platform}\n\n`)
+    console.log(`PLUGINS: ${plugins}\n\n`)
+    console.log(`PRIVATECLICKMEASUREMENT: ${privateClickMeasurement}\n\n`)
+    console.log(`REDUCEDMOTION: ${reducedMotion}\n\n`)
+    console.log(`SCREENFRAME: ${screenFrame}\n\n`)
+    console.log(`SCREENRESOLUTION: ${screenResolution}\n\n`)
+    console.log(`SESSIONSTORAGE: ${sessionStorage}\n\n`)
+    console.log(`SUPPORTSSERVICEWORKERS: ${supportsServiceWorkers}\n\n`)
+    console.log(`SUPPORTSWEBRTC: ${supportsWebRTC}\n\n`)
+    console.log(`SUPPORTSWEBSCOKETS: ${supportsWebSockets}\n\n`)
+    console.log(`SUPPORTSWEBWORKERS: ${supportsWebWorkers}\n\n`)
+    console.log(`TIMEZONE: ${timezone}\n\n`)
+    console.log(`TOUCHSUPPORT: ${touchSupport}\n\n`)
+    console.log(`TLS_COMPATIBILITY: ${tlsCompatibility}\n\n`)
+    console.log(`USERAGENT: ${userAgent}\n\n`)
+    console.log(`USERAGENTMASKED: ${userAgentMasked}\n\n`)
+    console.log(`VENDOR: ${vendor}\n\n`)
+    console.log(`VENDORFLAVORS: ${vendorFlavors}\n\n`)
+    console.log(`WEBGLBASICS: ${webGlBasics}\n\n`)
+    console.log(`WEBGLEXTENSIONS: ${webGlExtensions}\n\n`)
 }
