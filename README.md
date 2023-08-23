@@ -1,4 +1,5 @@
-# Browser Hash - Identificador de Navegador
+[READ IN ENGLISH](README-en.md)
+# Browser Hash - Identificador de Navegador 
 
 O Browser Hash é uma ferramenta poderosa para suprir a necessidade de identificação da máquina do cliente, utilizando informações do navegador utilizado. Ele gera um ID (hash) exclusivo que identifica o navegador, mesmo quando utilizado em uma aba anônima ou através de uma VPN, embora possa apresentar algumas limitações em cenários específicos.
 
