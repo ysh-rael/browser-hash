@@ -15,7 +15,6 @@ const pixelDepth = window.screen.pixelDepth // densidade de pixel
 // Informações sobre a GPU
 const gpuInfo = navigator.gpu ? `${navigator.gpu.deviceName}, ${navigator.gpu.vendorName}` : 'N/A'
 const webglVersion = navigator.gpu ? navigator.gpu.webglVersion || 'N/A' : 'N/A'
-const totalRam = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'N/A'
 
 // Informações do dispositivo móvel
 const mobileInfo = {
@@ -44,6 +43,13 @@ const ecmascriptVersion = (typeof Symbol === 'function' && typeof Symbol.iterato
 const supportsServiceWorkers = 'serviceWorker' in navigator ? 'Supported' : 'Not Supported'
 const supportsWebWorkers = 'Worker' in window ? 'Supported' : 'Not Supported'
 const supportsWebRTC = 'RTCPeerConnection' in window ? 'Supported' : 'Not Supported'
+const browserVendor = navigator.vendor; // Fabricante do navegador
+const browserProduct = navigator.product; // Produto do navegador (por exemplo, 'Gecko', 'Presto', 'WebKit')
+const browserBuildID = navigator.buildID; // ID de compilação do navegador
+
+// Informações sobre a plataforma
+const platform = navigator.platform; // Plataforma em que o navegador está sendo executado (por exemplo, Win32, MacIntel, Linux x86_64)
+const osVersion = navigator.appVersion; // Versão específica do sistema operacional
 
 // Combina todas as informações estáticas em uma string
 const combinedData =
@@ -58,7 +64,6 @@ const combinedData =
     pixelDepth +
     gpuInfo +
     webglVersion +
-    totalRam +
     mobileInfo +
     htmlVersion +
     userAgentMasked +
@@ -67,7 +72,12 @@ const combinedData =
     ecmascriptVersion +
     supportsWebRTC +
     supportsWebWorkers +
-    supportsServiceWorkers
+    supportsServiceWorkers +
+    platform +
+    osVersion +
+    browserVendor +
+    browserProduct +
+    browserBuildID
 
 // Calcula o hash SHA-256
 SHA256(combinedData).then(hash => {
@@ -84,23 +94,31 @@ SHA256(combinedData).then(hash => {
 
 
 // Depuração console:
-console.log(`BROWSERNAME: ${browserName}\n\n`)
-console.log(`BROWSERVERSION: ${browserVersion}\n\n`)
-console.log(`COLORDEPTH: ${colorDepth}\n\n`)
-console.log(`CPUCORES: ${cpuCores}\n\n`)
-console.log(`DEVICETYPE: ${deviceType}\n\n`)
-console.log(`GPINFO: ${gpuInfo}\n\n`)
-console.log(`HTMLVERSION: ${htmlVersion}\n\n`)
-console.log(`MOBILEINFO: ${mobileInfo}\n\n`)
-console.log(`OS: ${os}\n\n`)
-console.log(`PREFERREDLANGUAGE: ${preferredLanguage}\n\n`)
-console.log(`PIXELDEPTH: ${pixelDepth}\n\n`)
-console.log(`SCREENRESOLUTION: ${screenResolution}\n\n`)
-console.log(`SUPPORTSSERVICETWORKERS: ${supportsServiceWorkers}\n\n`)
-console.log(`SUPPORTSWEBRTC: ${supportsWebRTC}\n\n`)
-console.log(`SUPPORTSWEBWORKERS: ${supportsWebWorkers}\n\n`)
-console.log(`TLSCOMPATIBILITY: ${tlsCompatibility}\n\n`)
-console.log(`TOTALRAM: ${totalRam}\n\n`)
-console.log(`USERAGENT: ${userAgent}\n\n`)
-console.log(`USERAGENTMASKED: ${userAgentMasked}\n\n`)
-console.log(`WEBGLVERSION: ${webglVersion}\n\n`)
+function debug() {
+    console.log(`BROWSERNAME: ${browserName}\n\n`);
+    console.log(`BROWSERBUILDID: ${browserBuildID}\n\n`);
+    console.log(`BROWSERPRODUCT: ${browserProduct}\n\n`);
+    console.log(`BROWSERVERSION: ${browserVersion}\n\n`);
+    console.log(`BROWSERVENDOR: ${browserVendor}\n\n`);
+    console.log(`COLORDEPTH: ${colorDepth}\n\n`);
+    console.log(`CPUCORES: ${cpuCores}\n\n`);
+    console.log(`DEVICETYPE: ${deviceType}\n\n`);
+    console.log(`ECMASCRIPTVERSION: ${ecmascriptVersion}\n\n`);
+    console.log(`GPUINFO: ${gpuInfo}\n\n`);
+    console.log(`HTMLVERSION: ${htmlVersion}\n\n`);
+    console.log(`MOBILEINFO: ${mobileInfo}\n\n`);
+    console.log(`OS: ${os}\n\n`);
+    console.log(`OSVERSION: ${osVersion}\n\n`);
+    console.log(`PREFERREDLANGUAGE: ${preferredLanguage}\n\n`);
+    console.log(`PIXELDEPTH: ${pixelDepth}\n\n`);
+    console.log(`PLATFORM: ${platform}\n\n`);
+    console.log(`SCREENRESOLUTION: ${screenResolution}\n\n`);
+    console.log(`SUPPORTSSERVICEWORKERS: ${supportsServiceWorkers}\n\n`);
+    console.log(`SUPPORTSWEBRTC: ${supportsWebRTC}\n\n`);
+    console.log(`SUPPORTSWEBSCOKETS: ${supportsWebSockets}\n\n`);
+    console.log(`SUPPORTSWEBWORKERS: ${supportsWebWorkers}\n\n`);
+    console.log(`TLSCOMPATIBILITY: ${tlsCompatibility}\n\n`);
+    console.log(`USERAGENT: ${userAgent}\n\n`);
+    console.log(`USERAGENTMASKED: ${userAgentMasked}\n\n`);
+    console.log(`WEBGLVERSION: ${webglVersion}\n\n`);
+}
