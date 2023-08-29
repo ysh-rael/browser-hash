@@ -22,7 +22,7 @@ box_hash.addEventListener('click', function() {
 
     // Copia o conteúdo para a área de transferência
     document.execCommand('copy');
-
+ 
     // Remove o elemento de texto temporário
     document.body.removeChild(tempTextArea);
 
