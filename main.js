@@ -7,7 +7,7 @@ const deviceType = /Mobile/.test(userAgent) ? 'Mobile' : 'Desktop'
 const preferredLanguage = navigator.language
 
 // Informações estáticas sobre o dispositivo
-const screenResolution = `${window.screen.width}x${window.screen.height}` // resolução da tela
+const screenResolution = `${screen.availWidth}x${screen.availHeight}` // resolução da tela
 const cpuCores = navigator.hardwareConcurrency // quant. nucleos da cpu
 const colorDepth = window.screen.colorDepth // densidade de cores
 const pixelDepth = window.screen.pixelDepth // densidade de pixel
@@ -30,7 +30,7 @@ if (/Mobile/.test(userAgent)) {
     mobileInfo.manufacturer = 'SeuFabricanteAqui' // Substitua pelo fabricante real
     mobileInfo.os = navigator.appVersion
     mobileInfo.browserVersion = 'SeuVersaoAqui' // Substitua pela versão real
-    mobileInfo.screenResolution = `${window.screen.width}x${window.screen.height}`
+    mobileInfo.screenResolution = `${screen.availWidth}x${screen.availHeight}`
 }
 
 const htmlVersion = document.doctype ? document.doctype.name : 'Unknown' // Versão do HTML
@@ -40,7 +40,7 @@ const tlsCompatibility = navigator.userAgent.includes('Chrome') ? 'TLS 1.3' : 'T
 // Informações do navegador
 const supportsWebSockets = 'WebSocket' in window ? 'Supported' : 'Not Supported'
 const ecmascriptVersion = (typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol') ? 'ES6+' : 'ES5'
-const supportsServiceWorkers = 'serviceWorker' in navigator ? 'Supported' : 'Not Supported'
+const supportsServiceWorkers = navigator.onLine ? 'Supported' : 'Not Supported'
 const supportsWebWorkers = 'Worker' in window ? 'Supported' : 'Not Supported'
 const supportsWebRTC = 'RTCPeerConnection' in window ? 'Supported' : 'Not Supported'
 const browserVendor = navigator.vendor // Fabricante do navegador
@@ -55,29 +55,82 @@ const osVersion = navigator.appVersion // Versão específica do sistema operaci
 
 // Informações adicionais
 const fonts = (() => {
-    const fontList = []
-    const fontTester = document.createElement('span')
-    fontTester.style.visibility = 'hidden'
-    fontTester.style.position = 'absolute'
-    fontTester.style.top = '-9999px'
-    document.body.appendChild(fontTester)
-    const defaultFonts = fontTester.style.fontFamily
-    const additionalFonts = [
-        'Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Helvetica', 'Trebuchet MS', 'Arial Black', 'Impact', 'Palatino Linotype',
-        'Book Antiqua', 'Tahoma', 'Geneva', 'Comic Sans MS', 'Lucida Sans Unicode',
-        'Lucida Grande', 'Century Gothic', 'Lucidabright', 'Noto Sans', 'Roboto',
-        'Lato', 'Open Sans', 'Montserrat', 'Source Sans Pro', 'Cabin'
-        // Adicione outras fontes aqui
-    ]
-    additionalFonts.forEach(font => {
-        fontTester.style.fontFamily = `${defaultFonts}, ${font}`
-        if (fontTester.style.fontFamily !== defaultFonts) {
-            fontList.push(font)
-        }
-    })
-    document.body.removeChild(fontTester)
-    return fontList.join(', ')
-})()
+    const fontList = [];
+    const fontTester = document.createElement('span');
+    fontTester.style.visibility = 'hidden';
+    fontTester.style.position = 'absolute';
+    fontTester.style.top = '-9999px';
+    document.body.appendChild(fontTester);
+    const defaultFonts = fontTester.style.fontFamily;
+
+    const fontData = [
+        { name: 'Arial', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Arial Black', variations: ['Regular'] },
+        { name: 'Book Antiqua', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Calibri', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Cambria', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Candara', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Comic Sans MS', variations: ['Regular', 'Bold'] },
+        { name: 'Consolas', variations: ['Regular', 'Bold'] },
+        { name: 'Courier New', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Georgia', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Helvetica', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Impact', variations: ['Regular'] },
+        { name: 'Lucida Console', variations: ['Regular'] },
+        { name: 'Lucida Sans Unicode', variations: ['Regular', 'Bold'] },
+        { name: 'Microsoft Sans Serif', variations: ['Regular'] },
+        { name: 'Monospace', variations: ['Regular'] },
+        { name: 'MS Sans Serif', variations: ['Regular'] },
+        { name: 'MS Serif', variations: ['Regular'] },
+        { name: 'Noto Sans', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Open Sans', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Palatino Linotype', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Roboto', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Tahoma', variations: ['Regular', 'Bold'] },
+        { name: 'Trebuchet MS', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Verdana', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Webdings', variations: ['Regular'] },
+        { name: 'Wingdings', variations: ['Regular'] },
+        { name: 'Yu Gothic', variations: ['Regular', 'Bold'] },
+        { name: 'Yu Gothic UI', variations: ['Regular', 'Bold'] },
+        { name: 'Yu Gothic UI Semibold', variations: ['Regular'] },
+        { name: 'Zapf Dingbats', variations: ['Regular'] },
+        { name: 'Webdings', variations: ['Regular'] },
+        { name: 'Wingdings', variations: ['Regular'] },
+        { name: 'Yu Gothic', variations: ['Regular', 'Bold'] },
+        { name: 'Yu Gothic UI', variations: ['Regular', 'Bold'] },
+        { name: 'Yu Gothic UI Semibold', variations: ['Regular'] },
+        { name: 'Zapf Dingbats', variations: ['Regular'] },
+        { name: 'Andale Mono', variations: ['Regular'] },
+        { name: 'Courier New', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Lucida Console', variations: ['Regular'] },
+        { name: 'Lucida Sans Typewriter', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Lucida Typewriter', variations: ['Regular', 'Bold', 'Italic', 'Bold Italic'] },
+        { name: 'Monaco', variations: ['Regular'] },
+        { name: 'OCR-A', variations: ['Regular'] },
+        { name: 'OCR-B', variations: ['Regular'] },
+        { name: 'Papyrus', variations: ['Regular'] },
+        { name: 'Playbill', variations: ['Regular'] },
+        { name: 'Symbol', variations: ['Regular'] },
+    ];
+
+
+    fontData.forEach(font => {
+        font.variations.forEach(variation => {
+            const fullFontName = `${font.name} ${variation}`;
+            fontTester.style.fontFamily = `${defaultFonts}, ${fullFontName}`;
+            if (fontTester.style.fontFamily !== defaultFonts) {
+                fontList.push(fullFontName);
+            }
+        });
+    });
+
+    document.body.removeChild(fontTester);
+    return fontList.join(', ');
+})();
+
+
+
 
 const domBlockers = (() => {
     const blockList = [
@@ -183,7 +236,7 @@ const combinedData =
     ecmascriptVersion +
     supportsWebRTC +
     supportsWebWorkers +
-    supportsServiceWorkers +
+    supportsServiceWorkers + // alterado para dar suporte a aba anônima no fire fox
     platform +
     osVersion +
     browserVendor +
